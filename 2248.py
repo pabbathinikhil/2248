@@ -1,9 +1,3 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[6]:
-
-
 import tkinter as tk
 import random
 import math
@@ -200,16 +194,3 @@ if __name__ == "__main__":
     root = tk.Tk()
     game = Game2248(root)
     root.mainloop()
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
