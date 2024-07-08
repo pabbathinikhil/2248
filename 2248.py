@@ -12,6 +12,7 @@ class Game2248:
         self.tile_size = 100
         self.target_value = 2048
         self.selected_tiles = []
+        self.score = 0  # Initialize the score
         
         # Initialize the frames
         self.start_frame = tk.Frame(master)
@@ -27,6 +28,8 @@ class Game2248:
         # Game screen widgets
         self.win_label = tk.Label(self.game_frame, text=f"Target: {self.target_value}", font=("Arial", 16))
         self.win_label.pack()
+        self.score_label = tk.Label(self.game_frame, text=f"Score: {self.score}", font=("Arial", 16))  # Score label
+        self.score_label.pack()
         self.canvas = tk.Canvas(self.game_frame, width=self.board_size * self.tile_size, height=self.board_size * self.tile_size)
         self.canvas.pack()
         self.reset_button = tk.Button(self.game_frame, text="Restart", command=self.reset_game)
@@ -52,6 +55,8 @@ class Game2248:
 
     def reset_game(self):
         self.board = [[0] * self.board_size for _ in range(self.board_size)]
+        self.score = 0  # Reset the score
+        self.update_score()
         self.prefill_board()
         self.draw_board()
         self.check_win()
@@ -59,7 +64,7 @@ class Game2248:
     def prefill_board(self):
         for i in range(self.board_size):
             for j in range(self.board_size):
-                self.board[i][j] = random.choice([2, 4, 8,16,32,64])
+                self.board[i][j] = random.choice([2, 4, 8, 16, 32, 64])
 
     def draw_board(self):
         self.canvas.delete("all")
@@ -130,6 +135,10 @@ class Game2248:
         if empty_tiles:
             i, j = random.choice(empty_tiles)
             self.board[i][j] = result_value
+        
+        self.score += sum_value  # Update the score with the sum of merged tiles
+        self.update_score()  # Update the score display
+        
         self.add_random_tiles(len(self.selected_tiles) - 1)  # Add (n-1) random tiles after merging
         self.draw_board()
         self.check_win()
@@ -183,6 +192,9 @@ class Game2248:
                 if i + 1 < self.board_size and j + 1 < self.board_size and self.board[i][j] == self.board[i + 1][j + 1]:
                     return False
         return True
+
+    def update_score(self):
+        self.score_label.config(text=f"Score: {self.score}")
 
     def switch_frame(self, frame):
         self.start_frame.pack_forget()
